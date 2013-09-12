@@ -85,7 +85,7 @@
             //If we are multiple, then add the show-tick class by default            
             var multiple = this.multiple ? ' show-tick' : '';
             var header = this.options.header ? '<h3 class="popover-title">' + this.options.header + '<button type="button" class="close" aria-hidden="true">&times;</button></h3>' : '';
-            var searchbox = this.options.liveSearch ? '<div class="bootstrap-select-searchbox"><input type="text" class="input-block-level" /></div>' : '';
+            var searchbox = this.options.liveSearch ? '<div class="bootstrap-select-searchbox"><input type="text" class="form-control" /></div>' : '';
             var drop =
                 "<div class='btn-group bootstrap-select" + multiple + "'>" +
                     "<button type='button' class='btn btn-default dropdown-toggle' data-toggle='dropdown'>" +
@@ -268,8 +268,9 @@
             var $menuClone = selectClone.addClass('open').find('> .dropdown-menu');
             var liHeight = $menuClone.find('li > a').outerHeight();
             var headerHeight = this.options.header ? $menuClone.find('.popover-title').outerHeight() : 0;
+            var searchBoxHeight = this.options.liveSearch ? $menuClone.find('.bootstrap-select-searchbox').outerHeight() : 0;
             selectClone.remove();
-            this.$newElement.data('liHeight', liHeight).data('headerHeight', headerHeight);
+            this.$newElement.data('liHeight', liHeight).data('headerHeight', headerHeight).data('searchBoxHeight', searchBoxHeight);
         },
 
         setSize: function() {
@@ -280,6 +281,7 @@
                 selectHeight = this.$newElement.outerHeight(),
                 liHeight = this.$newElement.data('liHeight'),
                 headerHeight = this.$newElement.data('headerHeight'),
+                searchBoxHeight = this.$newElement.data('searchBoxHeight'),
                 divHeight = menu.find('li .divider').outerHeight(true),
                 menuPadding = parseInt(menu.css('padding-top')) +
                               parseInt(menu.css('padding-bottom')) +
@@ -313,7 +315,7 @@
                         minHeight = 0;
                     }
                     menu.css({'max-height' : menuHeight + 'px', 'overflow' : 'hidden', 'min-height' : minHeight + 'px'});
-                    menuInner.css({'max-height' : menuHeight - headerHeight- menuPadding + 'px', 'overflow-y' : 'auto', 'min-height' : minHeight - menuPadding + 'px'});
+                    menuInner.css({'max-height' : menuHeight - headerHeight - searchBoxHeight - menuPadding + 'px', 'overflow-y' : 'auto', 'min-height' : minHeight - menuPadding + 'px'});
                 }
                 getSize();
                 $(window).resize(getSize);
@@ -323,7 +325,7 @@
                 var divLength = menu.find("li").slice(0,optIndex + 1).find('.div-contain').length;
                 menuHeight = liHeight*this.options.size + divLength*divHeight + menuPadding;
                 this.$newElement.toggleClass('dropup', (selectOffsetTop > selectOffsetBot) && menuHeight < menu.height() && this.options.dropupAuto);
-                menu.css({'max-height' : menuHeight + headerHeight + 'px', 'overflow' : 'hidden'});
+                menu.css({'max-height' : menuHeight + headerHeight + searchBoxHeight + 'px', 'overflow' : 'hidden'});
                 menuInner.css({'max-height' : menuHeight - menuPadding + 'px', 'overflow-y' : 'auto'});
             }
         },
